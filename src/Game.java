@@ -62,7 +62,7 @@ public class Game {
             }
         }
         if (firstCount == secondCount) {
-            return new GameResults("", firstCount, false, false);
+            return new GameResults("", firstCount, false, true);
         } else if (firstCount > secondCount) {
             winner = moveMaker1;
             loser = moveMaker2;
