@@ -7,7 +7,7 @@ public class Game {
     private MoveMaker moveMaker1;
     private MoveMaker moveMaker2;
 
-    public Cell play() {
+    public GameResults play() {
         board = new Board();
         System.out.println("Выберите игрока 1:");
         moveMaker1 = getMoveMaker();
@@ -49,7 +49,27 @@ public class Game {
                 isMoveMade = true;
             } while (!isMoveMade);
         }
-        return Cell.first;
+        int firstCount = 0;
+        int secondCount = 0;
+        int winScore = 0;
+        MoveMaker winner;
+        MoveMaker loser;
+        for (int i = 0; i < 8; ++i) {
+            for (int j = 0; j < 8; ++j) {
+
+            }
+        }
+        if (firstCount == secondCount) {
+            return new GameResults("", firstCount, false, false);
+        } else if (firstCount > secondCount) {
+            winner = moveMaker1;
+            loser = moveMaker2;
+
+        } else {
+            winner = moveMaker2;
+            loser = moveMaker1;
+        }
+        return new GameResults(winner.name, winScore, winner instanceof Player && loser instanceof Engine, false);
     }
 
     private MoveMaker getMoveMaker() {
@@ -66,5 +86,18 @@ public class Game {
         } else {
             return new EngineSimple(board);
         }
+    }
+}
+
+class GameResults{
+    String winner;
+    int score;
+    boolean isRanked;
+    boolean isTie;
+    public GameResults(String winner, int score, boolean isRanked, boolean isTie){
+        this.winner = winner;
+        this.isRanked = isRanked;
+        this.score = score;
+        this.isTie = isTie;
     }
 }
