@@ -58,7 +58,12 @@ public class Game {
         MoveMaker loser;
         for (int i = 0; i < 8; ++i) {
             for (int j = 0; j < 8; ++j) {
-
+                if(board.top().board[i][j] == Cell.first){
+                    firstCount++;
+                }
+                if(board.top().board[i][j] == Cell.second){
+                    secondCount++;
+                }
             }
         }
         if (firstCount == secondCount) {
@@ -66,10 +71,11 @@ public class Game {
         } else if (firstCount > secondCount) {
             winner = moveMaker1;
             loser = moveMaker2;
-
+            winScore = firstCount;
         } else {
             winner = moveMaker2;
             loser = moveMaker1;
+            winScore = secondCount;
         }
         return new GameResults(winner.name, winScore, winner instanceof Player && loser instanceof Engine, false);
     }
