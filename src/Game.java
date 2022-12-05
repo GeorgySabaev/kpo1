@@ -49,6 +49,8 @@ public class Game {
                 isMoveMade = true;
             } while (!isMoveMade);
         }
+        System.out.println("Конец игры!");
+        System.out.println(board);
         int firstCount = 0;
         int secondCount = 0;
         int winScore = 0;
