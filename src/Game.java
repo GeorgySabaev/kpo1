@@ -1,0 +1,70 @@
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
+import java.util.Scanner;
+import java.util.SimpleTimeZone;
+
+public class Game {
+    private Board board;
+    private MoveMaker moveMaker1;
+    private MoveMaker moveMaker2;
+
+    public Cell play() {
+        board = new Board();
+        System.out.println("Выберите игрока 1:");
+        moveMaker1 = getMoveMaker();
+        System.out.println("Выберите игрока 2:");
+        moveMaker2 = getMoveMaker();
+
+        System.out.println(moveMaker1.name + " против " + moveMaker2.name + "!");
+
+        while (!board.isFinished()) {
+            MoveMaker current;
+            if (board.top().currentTurn == Cell.first) {
+                current = moveMaker1;
+            } else {
+                current = moveMaker2;
+            }
+            MoveData moveData;
+            boolean isMoveMade = false;
+            do {
+                System.out.println();
+                System.out.println("Ход игрока " + current.name + ":");
+                System.out.println(board);
+                moveData = current.move();
+                if (moveData.isTakeback && board.timeline.size() < 3) {
+                    System.out.println("Нельзя взять ход назад в свой первый ход!");
+                    System.out.println("Сделайте ход снова.");
+                    continue;
+                }
+                if (moveData.isTakeback) {
+                    System.out.println("Игрок " + current.name + " берет ход назад!");
+                    board.timeline.pop();
+                    board.timeline.pop();
+                    break;
+                }
+                if (!board.tryMove(moveData.coords)) {
+                    System.out.println("Нельзя поставить фишку в эту клетку!");
+                    System.out.println("Сделайте ход снова.");
+                    continue;
+                }
+                isMoveMade = true;
+            } while (!isMoveMade);
+        }
+        return Cell.first;
+    }
+
+    private MoveMaker getMoveMaker() {
+        System.out.println("1: Человек");
+        System.out.println("2: ИИ (легкий)");
+        Scanner input = new Scanner(System.in);
+        int option = input.nextInt();
+        while (option > 2 || option < 0) {
+            System.out.println("Введите число от 1 до 2.");
+            option = input.nextInt();
+        }
+        if (option == 1) {
+            return new Player(board);
+        } else {
+            return new EngineSimple(board);
+        }
+    }
+}
